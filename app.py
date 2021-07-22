@@ -8,6 +8,7 @@ import os
 # -- Initialization section --
 app = Flask(__name__)
 
+app.config["GIPHY_KEY"] = os.getenv("GIPHY_KEY")
 
 # -- Routes section --
 @app.route('/')
@@ -19,8 +20,9 @@ def index():
 @app.route("/yourgif", methods = ["GET", "POST"])
 def yourgif():
     user_response = request.form["gifchoice"]
-    gif_link = getImageUrlFrom(user_response)
-    gif_link2 = getImageUrlFrom(user_response)
+    key = app.config["GIPHY_KEY"]
+    gif_link = getImageUrlFrom(user_response,key)
+    gif_link2 = getImageUrlFrom(user_response, key)
     # get the gif from giphy and puts the link on the webpage
     return render_template("yourgif.html", gif_link = gif_link, gif_link2 = gif_link2, time = datetime.now() )
     # datetime,now() to trick our browser into updating the CSS
